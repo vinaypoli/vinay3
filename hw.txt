@@ -1,0 +1,67 @@
+package polii;
+
+import java.text.DateFormatSymbols;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
+
+public class Facebook {
+	public static void main(String[] args) throws InterruptedException {
+		System.setProperty("webdriver.chrome.driver","C:\\Users\\Vinay Kumar Reddy\\Downloads\\chromedriver_win32\\chromedriver.exe");
+		WebDriver driver=new ChromeDriver();
+		driver.get("https://www.facebook.com/");
+		driver.manage().window().maximize();
+		driver.manage().deleteAllCookies();
+		driver.findElement(By.id("email")).sendKeys("hello");
+		Thread.sleep(2000);
+		driver.findElement(By.id("pass")).sendKeys("Hidude");
+		Thread.sleep(2000);
+		//driver.findElement(By.linkText("Forgot account?")).click();
+		//------Radio Buttons-------
+		//System.out.println(driver.findElements(By.xpath("//*[@id='u_0_j']")).size());
+		//System.out.println(driver.findElements(By.xpath("//input[@type='radio']")).size());
+		int count=driver.findElements(By.xpath("//input[@type='radio']")).size();
+		for(int i=0;i<count;i++){
+		String text=driver.findElements(By.xpath("//input[@type='radio']")).get(i).getAttribute("value");
+		if(text.equals("Male")){
+			driver.findElements(By.xpath("//input[@type='radio']")).get(i).click();
+		}
+		}
+		driver.findElement(By.xpath("//*[@id='u_0_i']")).click();
+		//----------DropDowns------------
+		Select s=new Select(driver.findElement(By.name("birthday_month")));
+		s.selectByIndex(3);
+		Thread.sleep(2000);
+		s.selectByValue("5");
+		Thread.sleep(2000);
+		s.selectByVisibleText("Jan");
+		List<WebElement> s1=s.getOptions();
+		s1.remove(0);
+		System.out.println("No of months:"+s1.size());
+		s1.remove(7);
+		s1.remove(10);
+		for(int i=0;i<s1.size();i++){
+			System.out.println(s1.get(i).getAttribute("value"));
+			System.out.println(s1.get(i).getText());
+		}
+		//--------Future Months-----------
+		Calendar c=Calendar.getInstance();
+		int count1=c.get(c.MONTH);
+		//System.out.println(count1);
+		String[] months=new DateFormatSymbols().getMonths();
+		for(int i=count1;i<12;i++){
+		System.out.println("Future Months:"+months[i]);
+	}
+		for(int i=0;i<count1;i++){
+			System.out.println("Previous Months:"+months[i]);
+		}
+	}
+
+}
